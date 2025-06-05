@@ -1,0 +1,166 @@
+---
+title: "Mapping Earth's Pulse: Temporal Ridgeline Visualization in R"
+author: Duccio Rocchini
+format: revealjs
+editor: visual
+---
+
+## Motivation
+
+There is a growing need for innovative visual methods to decode Earth’s **“pulse”**
+
+![](landsat_gee.png){fig-width="60%" fig-align="center"}
+
+## Problem Statement
+
+How can we intuitively **visualize** long-term environmental changes across regions?
+
+Need for techniques that highlight **temporal structure** while retaining spatial identity
+
+![](../images/bcube.png){fig-align="center" width="70%"}
+
+## Aim
+
+-   Utilize temporal **ridgeline plots** to summarize satellite-derived time series
+-   Leverage **R** powerful geospatial and visualization libraries (e.g., `ggplot2`, `ggridges`, `terra`)
+-   Enable **comparative analysis** across years, locations, and environmental variables
+-   **Communicate** complex data trends with clarity and aesthetic appeal
+
+## From images
+
+```{r ridge, echo = TRUE}
+library(imageRy)
+ex=im.import("Sentinel2_NDVI_2020-02-21.tif")
+```
+
+## To ridgelines
+
+```{r ridgel, echo = TRUE, messages = FALSE}
+im.ridgeline(ex, scale=2, palette="inferno")
+```
+
+## The very first one
+
+Antoine de Saint-Exupéry, Le Petit Prince:
+
+![](../images/first_ridgeline.jpeg){fig-align="center" width="70%"}
+
+## The algorithm
+
+<div>
+
+$\omega1 = \begin{bmatrix}
+\lambda_{1_{\omega1}} & \lambda_{2_{\omega1}} & \lambda_{3_{\omega1}}\\
+\lambda_{4_{\omega1}} & \lambda_{5_{\omega1}} & \lambda_{6_{\omega1}}\\
+\lambda_{7_{\omega1}} & \lambda_{8_{\omega1}} & \lambda_{9_{\omega1}}
+\end{bmatrix}$
+
+$\omega2 = \begin{bmatrix}
+\lambda_{1_{\omega2}} & \lambda_{2_{\omega2}} & \lambda_{3_{\omega2}}\\
+\lambda_{4_{\omega2}} & \lambda_{5_{\omega2}} & \lambda_{6_{\omega2}}\\
+\lambda_{7_{\omega2}} & \lambda_{8_{\omega2}} & \lambda_{9_{\omega2}}
+\end{bmatrix}$
+
+$\omega3 =
+\begin{bmatrix}
+\lambda_{1_{\omega3}} & \lambda_{2_{\omega3}} & \lambda_{3_{\omega3}}\\
+\lambda_{4_{\omega3}} & \lambda_{5_{\omega3}} & \lambda_{6_{\omega3}}\\
+\lambda_{7_{\omega3}} & \lambda_{8_{\omega3}} & \lambda_{9_{\omega3}}
+\end{bmatrix}$
+
+</div>
+
+## Converting the data to a dataframe
+
+```{r data, echo = TRUE, eval = FALSE}
+df = as.data.frame(img)
+```
+
+<img src="../images/ridgeline_tab.png" width="50%"/>
+
+## tidyverse mode
+
+```{r tidy, echo = TRUE, eval = FALSE}
+df = as.data.frame(img, wide=F)
+```
+
+<img src="../images/ridgeline_tidy.png" width="40%"/>
+
+## Example
+
+```{r imageRy, echo = TRUE}
+library(imageRy)
+ndvi = im.import("Sentinel2")
+```
+
+## NDVI data
+
+```{r ndvi, echo = TRUE}
+ndvi
+```
+
+## Ridgeline plots
+
+```{r ridgeline, echo=TRUE, message=FALSE}
+names(ndvi) = c("02_feb", "05_may", "08_aug", "11_nov")
+im.ridgeline(ndvi, scale=1)
+```
+
+## Scale parameter
+
+```{r scale, echo=TRUE, message=FALSE}
+names(ndvi) = c("02_feb", "05_may", "08_aug", "11_nov")
+im.ridgeline(ndvi, scale=2)
+```
+
+## RGB drone imagery
+
+Drone image for the Uccellina zone, University of Siena:
+
+```{r drone, echo = FALSE, warning = FALSE, message = FALSE}
+library(terra)
+drone = rast("/Users/ducciorocchini/Documents/lectures_and_seminars/images/uccellina.png")
+dron=flip(drone)
+plotRGB(drone)
+```
+
+## Ridgeline plots with drone data
+
+```{r ridgedrone, echo = TRUE, warning = FALSE, message = FALSE}
+im.ridgeline(drone, scale=2)
+```
+
+## Putting NA values
+
+```{r dronena, echo = TRUE, warning = FALSE, message = FALSE}
+drone[drone > 250] = NA
+plotRGB(drone)
+```
+
+## Ridgeline plots with drone data - NA values in
+
+```{r ridgedronena, echo = TRUE, warning = FALSE, message = FALSE}
+im.ridgeline(drone, scale=2)
+```
+
+
+## Conclusion
+
+`im.ridgeline()` will:
+
+-   Enhance **interpretability** of dense satellite datasets
+-   Foster **reproducibility** and **scalability** through open-source tools in R
+
+## Many thanks!
+
+![](images/berlin.png)
+
+Contact:
+
+Duccio Rocchini, PhD
+
+Full Professor at: BIOME Lab, Alma Mater Studiorum University of Bologna, Italy
+
+[duccio.rocchini\@unibo.it](mailto:duccio.rocchini@unibo.it){.email}
+
+This presentation has been made by RMarkdown and Quattro. Open source code at: <https://github.com/ducciorocchini/NASA_sbg>
