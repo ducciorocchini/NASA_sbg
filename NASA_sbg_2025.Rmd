@@ -1,16 +1,18 @@
 <!-- presentation mode: Ctrl + ⌘ + F -->
+<!-- Press W for wide mode -->
 
 ---
-title: "NASA"
+title: "Mapping Earth's Pulse: Temporal Ridgeline Visualization in R"
+author: Duccio Rocchini
 output:
   ioslides_presentation: default
   beamer_presentation: default
   slidy_presentation: default
-date: "2025-06-05"
+date: "2025-06-23"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.align = "center", echo = FALSE)
 ```
 
 ## R Markdown
@@ -19,19 +21,72 @@ This is an R Markdown presentation. Markdown is a simple formatting syntax for a
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
 
-## Slide with Bullets
+## Motivation
+There is a growing need for innovative visual methods to decode Earth’s **“pulse”**
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+<img src="../images/landsat_gee.png" width="80%" />
 
-## Slide with R Output
 
-```{r cars, echo = TRUE}
-summary(cars)
+## Problem Statement
+
+How can we intuitively **visualize** long-term environmental changes across regions?
+
+Need for techniques that highlight **temporal structure** while retaining spatial identity
+ 
+<img src="../images/bcube.png" width="70%" />
+
+## Aim
+
+- Utilize temporal **ridgeline plots** to summarize satellite-derived time series <!-- .element: class="fragment" -->
+
+> -  Leverage **R** powerful geospatial and visualization libraries (e.g., ggplot2, ggridges, terra) <!-- .element: class="fragment" -->
+
+> - Enable **comparative analysis** across years, locations, and environmental variables <!-- .element: class="fragment" -->
+
+> -  **Communicate** complex data trends with clarity and aesthetic appeal <!-- .element: class="fragment" -->
+
+## Ridgeline plot
+
+## Saint-Exupéry
+
+## The algorithm
+
+$\omega1 = \begin{bmatrix}
+\lambda_{1_{\omega1}} & \lambda_{2_{\omega1}} & \lambda_{3_{\omega1}}\\
+\lambda_{4_{\omega1}} & \lambda_{5_{\omega1}} & \lambda_{6_{\omega1}}\\
+\lambda_{7_{\omega1}} & \lambda_{8_{\omega1}} & \lambda_{9_{\omega1}}
+\end{bmatrix}$
+
+$\omega2 = \begin{bmatrix}
+\lambda_{1_{\omega2}} & \lambda_{2_{\omega2}} & \lambda_{3_{\omega2}}\\
+\lambda_{4_{\omega2}} & \lambda_{5_{\omega2}} & \lambda_{6_{\omega2}}\\
+\lambda_{7_{\omega2}} & \lambda_{8_{\omega2}} & \lambda_{9_{\omega2}}
+\end{bmatrix}$
+
+$\omega3 =
+\begin{bmatrix}
+\lambda_{1_{\omega3}} & \lambda_{2_{\omega3}} & \lambda_{3_{\omega3}}\\
+\lambda_{4_{\omega3}} & \lambda_{5_{\omega3}} & \lambda_{6_{\omega3}}\\
+\lambda_{7_{\omega3}} & \lambda_{8_{\omega3}} & \lambda_{9_{\omega3}}
+\end{bmatrix}$
+
+## Converting the data to a dataframe
+
+```{r data, echo = TRUE, eval = FALSE}
+df = as.data.frame(img)
 ```
 
-## Slide with R Output
+<img src="../images/ridgeline_tab.png" width="50%" />
+
+## tidyverse mode
+
+```{r tidy, echo = TRUE, eval = FALSE}
+df = as.data.frame(img, wide=F)
+```
+
+<img src="../images/ridgeline_tidy.png" width="40%" />
+
+## Example
 
 ```{r imageRy, echo = TRUE}
 library(imageRy)
@@ -44,19 +99,19 @@ ndvi = im.import("Sentinel2")
 ndvi
 ```
 
-## Ridgeline plots
+<!-- ## Ridgeline plots -->
 
-```{r ridgeline, echo=TRUE, message=FALSE}
+<!-- ```{r ridgeline, echo=TRUE, message=FALSE}
 names(ndvi) = c("02_feb", "05_may", "08_aug", "11_nov")
 im.ridgeline(ndvi, scale=1)
-```
+```-->
 
 ## Scale parameter
 
-```{r scale, echo=TRUE, message=FALSE}
+<!-- ```{r scale, echo=TRUE, message=FALSE}
 names(ndvi) = c("02_feb", "05_may", "08_aug", "11_nov")
 im.ridgeline(ndvi, scale=2)
-```
+``` -->
 
 ## RGB drone imagery
 
@@ -69,11 +124,11 @@ dron=flip(drone)
 plotRGB(drone)
 ```
 
-## Ridgeline plots with drone data
+<!-- ## Ridgeline plots with drone data -->
 
-```{r ridgedrone, echo = TRUE, warning = FALSE, message = FALSE}
+<!-- ```{r ridgedrone, echo = TRUE, warning = FALSE, message = FALSE}
 im.ridgeline(drone, scale=2)
-```
+``` -->
 
 ## Putting NA values
 ```{r dronena, echo = TRUE, warning = FALSE, message = FALSE}
@@ -93,15 +148,16 @@ im.ridgeline(drone, scale=2)
 pairs(drone)
 ```-->
 
+## Many thanks!
+<img src="/Users/ducciorocchini/Documents/lectures_and_seminars/images/berlin.png" width="20%" />
 
-## Slide with Plot
+Contact: 
 
-```{r pressure}
-plot(pressure)
-```
+Duccio Rocchini, PhD
 
-## Test image
+Full Professor at:
+BIOME Lab, Alma Mater Studiorum University of Bologna, Italy
 
-Test
+duccio.rocchini@unibo.it 
 
-<img src="/Users/ducciorocchini/Documents/lectures_and_seminars/images/uccellina.png" width="100%" />
+This presentation has been made by RMarkdown. Open source code at: https://github.com/ducciorocchini/NASA_sbg
