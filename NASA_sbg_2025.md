@@ -1,0 +1,107 @@
+<!-- presentation mode: Ctrl + ⌘ + F -->
+
+---
+title: "test"
+output:
+  ioslides_presentation: default
+  beamer_presentation: default
+  slidy_presentation: default
+date: "2025-06-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with R Output
+
+```{r imageRy, echo = TRUE}
+library(imageRy)
+ndvi = im.import("Sentinel2")
+```
+
+## NDVI data
+
+```{r ndvi, echo = TRUE}
+ndvi
+```
+
+## Ridgeline plots
+
+```{r ridgeline, echo=TRUE, message=FALSE}
+names(ndvi) = c("02_feb", "05_may", "08_aug", "11_nov")
+im.ridgeline(ndvi, scale=1)
+```
+
+## Scale parameter
+
+```{r scale, echo=TRUE, message=FALSE}
+names(ndvi) = c("02_feb", "05_may", "08_aug", "11_nov")
+im.ridgeline(ndvi, scale=2)
+```
+
+## RGB drone imagery
+
+Drone image for the Uccellina zone, University of Siena:
+
+```{r drone, echo = FALSE, warning = FALSE, message = FALSE}
+library(terra)
+drone = rast("/Users/ducciorocchini/Documents/lectures_and_seminars/images/uccellina.png")
+dron=flip(drone)
+plotRGB(drone)
+```
+
+## Ridgeline plots with drone data
+
+```{r ridgedrone, echo = TRUE, warning = FALSE, message = FALSE}
+im.ridgeline(drone, scale=2)
+```
+
+## Putting NA values
+```{r dronena, echo = TRUE, warning = FALSE, message = FALSE}
+drone[drone > 250] = NA
+plotRGB(drone)
+```
+
+## Ridgeline plots with drone data - NA values in
+
+```{r ridgedronena, echo = TRUE, warning = FALSE, message = FALSE}
+im.ridgeline(drone, scale=2)
+```
+
+<!-- ## Ridgeline plots with drone data - NA values in -->
+
+<!-- ```{r pairsdronena, echo = TRUE, warning = FALSE, message = FALSE}
+pairs(drone)
+```-->
+
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
+## Test image
+
+Test
+
+<img src="/Users/ducciorocchini/Documents/lectures_and_seminars/images/uccellina.png" width="100%" />
